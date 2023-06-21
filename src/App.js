@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, } from 'react-router-dom';
+import Home from './components/Home';
+import Quiz from './components/Quiz';
+import questionBank from './api/questionBank.json';
+
+export const LocationDisplay = () => {
+  const location = useLocation();
+  return (
+    <div data-testid="location-display" style={{ display: 'none' }}>
+      {location.pathname}
+    </div>
+  );
+};
 
 function App() {
+  const [questionData, setQuestionData] = useState(questionBank)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home questionData={questionData} />} />
+        <Route exact path="/questionnaire/:id" element={<Quiz questionData={questionData} />} />
+      </Routes>
+    </Router>
+    </>
+    
   );
 }
 
